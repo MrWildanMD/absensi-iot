@@ -11,10 +11,10 @@ class Mahasiswa extends Model
 {
     use HasFactory;
     protected $table = 'mahasiswa';
-    protected $fillable = ['uid', 'nim', 'nik', 'nama', 'kelas', 'jurusan'];
+    protected $fillable = ['nik', 'nama', 'ttl', 'jk', 'alamat', 'rtrw','kelurahan','kecamatan','agama','status','pekerjaan','kewarganegaraan','uid'];
 
-    public function absensi(): HasMany
-    {
-        return $this->hasMany(Absensi::class);
-    }
+    // public function absensi(): HasMany
+    // {
+    //     return $this->hasMany(Absensi::class);
+    // }
 }

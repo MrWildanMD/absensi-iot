@@ -53,6 +53,15 @@
                   </p>
                 </a>
               </li>
+               <li class="nav-item">
+                <a href="{{ route('jadwal.index') }}" class="nav-link">
+                  <i class="nav-icon fas fa-calendar-alt"></i>
+                  <p>
+                    Data Jadwal
+                    {{-- <span class="badge badge-info right">2</span> --}}
+                  </p>
+                </a>
+              </li>
           {{-- <li class="nav-item menu-open">
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>

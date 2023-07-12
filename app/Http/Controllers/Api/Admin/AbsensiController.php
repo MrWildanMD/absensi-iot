@@ -13,7 +13,7 @@ class AbsensiController extends Controller
      */
     public function index()
     {
-        $absensi = Absensi::with('mahasiswa')->get();
+        $absensi = Absensi::all();
         return response()->json($absensi);
     }
 
@@ -22,13 +22,12 @@ class AbsensiController extends Controller
      */
     public function store(Request $request)
     {
-        $absensi = new Absensi;
-        $absensi->uid = $request->uid;
-        $absensi->jam = $request->jam;
-        $absensi->tanggal = $request->tanggal;
-        $absensi->save();
+        $input = $request->json()->all();
+        // dd($input["tanggal"]);
+        $absensi = Absensi::create($input);
         return response()->json([
-            "message" => "Absensi Berhasil!",
+            "success" => true,
+            "message" => "Absensi successfully.",
             "data" => $absensi
         ], 201);
     }

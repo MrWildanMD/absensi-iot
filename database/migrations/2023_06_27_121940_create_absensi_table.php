@@ -13,10 +13,12 @@ return new class extends Migration
 {
     Schema::create('absensi', function (Blueprint $table) {
         $table->id();
+        // $table->unsignedBigInteger('id_jadwal');
         $table->time('jam');
         $table->date('tanggal');
         $table->string('uid', 255);
-        $table->unsignedBigInteger('id_mahasiswa');
+        $table->string('status');
+        // $table->foreign('id_jadwal')->references('id')->on('jadwal');
         $table->timestamps();
     });
 }

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
 
 class MahasiswaController extends Controller
 {
@@ -17,7 +18,7 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
-        $mahasiswa = Mahasiswa::with('absensi')->get();
+        $mahasiswa = Mahasiswa::all();
         $title = 'Data Mahasiswa';
         return view('admin.dashboard', compact('mahasiswa', 'title'));
     }
@@ -27,7 +28,7 @@ class MahasiswaController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.mahasiswa-action', ['mahasiswa' => new Mahasiswa()]);
     }
 
     /**
@@ -35,7 +36,12 @@ class MahasiswaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $requestData = $request->all();
+        Mahasiswa::create($requestData);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data maba berhasil ditambahkan'
+        ]);
     }
 
     /**
@@ -69,4 +75,12 @@ class MahasiswaController extends Controller
     {
         //
     }
+
+    // public function fetchktp()
+    // {
+    // $response = Http::get('http://zqbynh0oxa.loclx.io/ocr'); // Replace 'your-api-endpoint' with the actual API endpoint to fetch data from
+    // $data = $response->json();
+
+    // return $data;
+    // }
 }

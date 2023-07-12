@@ -17,7 +17,7 @@ class AbsensiController extends Controller
      */
     public function index()
     {
-        $absensi = Absensi::with('mahasiswa')->get();
+        $absensi = Absensi::all();
         $title = 'Data Absensi';
         return view('admin.absensi', compact('absensi', 'title'));
     }
@@ -27,7 +27,7 @@ class AbsensiController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.absensi-action', ['absensi' => new Absensi()]);
     }
 
     /**

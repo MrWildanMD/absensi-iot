@@ -11,10 +11,5 @@ class Absensi extends Model
 {
     use HasFactory;
     protected $table = 'absensi';
-    protected $fillable = ['uid', 'jam', 'tanggal'];
-
-    public function mahasiswa(): BelongsTo
-    {
-        return $this->belongsTo(Mahasiswa::class, 'id_mahasiswa');
-    }
+    protected $fillable = ['jam', 'tanggal', 'uid', 'status'];
 }
