@@ -12,52 +12,67 @@
         </div>
         <div class="modal-body">
             <div class="form-group">
-                <label>UID</label>
-                        <div class="input-group">
-                            <span class="input-group-text" id="absensi">UID:</span>
-                            <input type="text" class="form-control" name="kode_absensi" value="{{ $absensi->nama_absensi }}"
-                                placeholder="Masukkan uid" aria-label="absensi" aria-describedby="absensi" id="inputabsensi">
-                        </div>
+                <label for="mahasiswa_select">Pilih mahasiswa</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="absensi">Mahasiswa:</span>
+                    <select class="form-control" name="mhs_id" id="mahasiswa_select" aria-label="absensi"
+                        aria-describedby="absensi">
+                        <option value="">Pilih Mahasiswa</option>
+                        @foreach ($mahasiswas as $mahasiswa)
+                            <option value="{{ $mahasiswa->id }}" {{ $absensi->kode_absensi == $mahasiswa->id ? 'selected' : '' }}>
+                                {{ $mahasiswa->nama }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
+
             <div class="form-group">
-                <label>Tanggal</label>
-                        <div class="input-group">
-                            <span class="input-group-text" id="absensi">Jadwal absensi:</span>
-                            <input type="date" class="form-control" name="nama_absensi" value="{{ $absensi->nama_absensi }}"
-                                placeholder="Masukkan tanggal absensi" aria-label="absensi" aria-describedby="absensi" id="inputabsensi">
-                        </div>
+                <label for="mahasiswa_select">Pilih jadwal</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="absensi">jadwal  :</span>
+                    <select class="form-control" name="jadwal_id" id="mahasiswa_select" aria-label="absensi"
+                        aria-describedby="absensi">
+                        <option value="">Pilih jadwal</option>
+                        @foreach ($jadwals as $jadwal)
+                            <option value="{{ $jadwal->id }}">
+                                {{ $jadwal->nama_matkul }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                {{-- <div class="col-md-4">
                     <div class="form-group">
                         <label for="jam_mulai">Nama</label>
                         <input type="text" class="form-control" value="{{ $absensi->jam_mulai }}" name="jam_mulai"
                             id="jam_mulai" placeholder="Masukkan nama">
                     </div>
-                </div>
-                <div class="col-md-4">
+                </div> --}}
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="jam_berakhir">Kelas</label>
-                        <input type="text" class="form-control" value="{{ $absensi->jam_berakhir }}" name="jam_berakhir"
-                            id="jam_berakhir" placeholder="Masukkan kelas">
+                        <input type="text" class="form-control" value="{{ $absensi->jam_berakhir }}"
+                            name="kelas" id="jam_berakhir" placeholder="Masukkan kelas">
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="jam_berakhir">Jurusan</label>
-                        <input type="text" class="form-control" value="{{ $absensi->jam_berakhir }}" name="jam_berakhir"
-                            id="jam_berakhir" placeholder="Masukkan jurusan">
+                        <input type="text" class="form-control" value="{{ $absensi->jam_berakhir }}"
+                            name="jurusan" id="jam_berakhir" placeholder="Masukkan jurusan">
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-            <label>Status</label>
-                    <div class="input-group">
-                        <span class="input-group-text" id="hari">Status:</span>
-                        <input type="text" class="form-control" name="hari" value="{{ $absensi->hari }}"
-                            placeholder="Masukkan status" aria-label="hari" aria-describedby="hari" id="inputhari">
-                    </div>
-            </div>
+            {{-- <div class="form-group">
+                <label>Status</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="hari">Status:</span>
+                    <input type="text" class="form-control" name="hari" value="{{ $absensi->hari }}"
+                        placeholder="Masukkan status" aria-label="hari" aria-describedby="hari" id="inputhari">
+                </div>
+            </div> --}}
             {{-- <div class="form-group">
                 <label for="user_id" class="form-label">Dosen</label>
                 <select class="form-control" name="user_id" id="user_id">

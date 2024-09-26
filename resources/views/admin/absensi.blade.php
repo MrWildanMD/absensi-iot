@@ -8,8 +8,15 @@
 <h1>Data Absensi</h1>
 <div class="card">
     <div class="card-header">
+      @if(session('msg'))
+    <div class="alert alert-warning">
+        {{ session('msg') }}
+    </div>
+@endif
+
       {{-- <h3 class="card-title">DataTable with default features</h3> --}}
     </div>
+
     <!-- /.card-header -->
     <div class="card-body">
         <button id="btnAdd" type="button" class="btn btn-success mb-3"><i class="bi bi-plus-circle me-2"></i>Tambah Absensi Baru</button>
@@ -19,43 +26,37 @@
           <th>UID</th>
           <th>Tanggal</th>
           <th>Nama</th>
+          <th>Mata Kuliah</th>
           <th>Kelas</th>
           <th>Jurusan</th>
           <th>Status</th>
+          <th>Waktu Absen</th>
         </tr>
         </thead>
         <tbody>
+          @foreach ($absensi as $key => $abs)
             <tr>
-                <td>1ff46663d</td>
-                <td>2023-07-07</td>
-                <td>Wildan Mauluddana</td>
-                <td>3A</td>
-                <td>MI</td>
-                <td>Absen Sukses</td>
-              </tr>
-            <tr>
-                <td>1ff4654363d</td>
-                <td>2023-06-07</td>
-                <td>Dani Ardhiansah</td>
-                <td>3A</td>
-                <td>MI</td>
-                <td>Terlambat 10 menit</td>
-              </tr>
-          {{-- @foreach ($absensi as $abs)
-            <tr>
-              <td>{{ $abs->uid }}</td>
+              <td>{{ $abs->mhs?->uid }}</td>
               <td>{{ $abs->tanggal }}</td>
+              <td>{{ $abs->mhs?->nama }}</td>
+              <td>{{ $abs->jadwal?->nama_matkul }}</td>
+              <td>{{ $abs->kelas }}</td>
+              <td>{{ $abs->jurusan }}</td>
+              <td>{{ $abs->status }}</td>
+              <td>{{ $abs->created_at }}</td>
             </tr>
-          @endforeach --}}
+          @endforeach
         </tbody>
         <tfoot>
         <tr>
-            <th>UID</th>
-            <th>Tanggal</th>
-            <th>Nama</th>
-            <th>Kelas</th>
-            <th>Jurusan</th>
-            <th>Status</th>
+          <th>UID</th>
+          <th>Tanggal</th>
+          <th>Nama</th>
+          <th>Mata Kuliah</th>
+          <th>Kelas</th>
+          <th>Jurusan</th>
+          <th>Status</th>
+          <th>Waktu Absen</th>
         </tr>
         </tfoot>
       </table>

@@ -3,8 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Absensi;
+use App\Models\Mahasiswa;
+use App\Models\Jadwal;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+
 
 class AbsensiController extends Controller
 {
@@ -17,9 +22,11 @@ class AbsensiController extends Controller
      */
     public function index()
     {
-        $absensi = Absensi::all();
+        $absensi = Absensi::with(['mhs','jadwal'])->get();
+        $mahasiswas = Mahasiswa::all();
+        $jadwals = Jadwal::all();
         $title = 'Data Absensi';
-        return view('admin.absensi', compact('absensi', 'title'));
+        return view('admin.absensi', compact('absensi', 'title', 'mahasiswas', 'jadwals'));
     }
 
     /**
@@ -27,7 +34,9 @@ class AbsensiController extends Controller
      */
     public function create()
     {
-        return view('admin.absensi-action', ['absensi' => new Absensi()]);
+        $mahasiswas = Mahasiswa::all();
+        $jadwals = Jadwal::all();
+        return view('admin.absensi-action', ['absensi' => new Absensi(), 'mahasiswas' => $mahasiswas, 'jadwals' => $jadwals]);
     }
 
     /**
@@ -35,7 +44,54 @@ class AbsensiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'mhs_id' => 'required',
+            'jadwal_id' => 'required',
+            'kelas' => 'required',
+            'jurusan' => 'required',
+
+        ]);
+        $jadwal = jadwal::where('id', $request->jadwal_id)->first();
+        $day = Carbon::now()->format('l');
+        $now = Carbon::now();
+
+        if (strtolower($jadwal->hari) == strtolower($day)) {
+            $jamMulai = Carbon::parse($jadwal->jam_mulai);
+            $jamBerakhir = Carbon::parse($jadwal->jam_berakhir);
+
+            if ($now < $jamMulai) {
+                return redirect()->back()->with('msg', 'Kelas belum dimulai !!');
+            } else if ($now > $jamBerakhir) {
+                $telat = $now->diffInMinutes($jamBerakhir); // Selisih dalam menit
+
+                // Memeriksa apakah telat kurang dari 1 jam (60 menit)
+                if ($telat < 60) {
+                    $status = "Terlambat $telat menit.";
+                    $this->addAbsen($request->all(), $status);
+                    return redirect()->back()->with('msg', "Telat $telat menit.");
+                } else {
+                    // Menghitung jam dan menit terlambat
+                    $jamTelat = floor($telat / 60); // Jam
+                    $menitTelat = $telat % 60; // Menit
+                    $status = "Terlambat $jamTelat jam $menitTelat menit.";
+                    $this->addAbsen($request->all(), $status);
+
+                    return redirect()->back()->with('msg', "Telat $jamTelat jam $menitTelat menit.");
+                }
+            } else {
+                $status = "Absen tepat waktu";
+                $this->addAbsen($request->all(), $status);
+
+                return redirect()->back()->with('msg','Berhasil absen tepat waktu');
+            }
+
+
+        } else {
+            return redirect()->back()->with('msg','Tidak ada jadwal perkuliahan !!');
+
+        }
+
+
     }
 
     /**
@@ -68,5 +124,17 @@ class AbsensiController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function addAbsen($absen, $status)
+    { 
+        Absensi::create([
+            'jam' => Carbon::now()->format('H:i:s'),
+            'tanggal' => Carbon::now(),
+            'uid' => $absen['mhs_id'],
+            'status' => $status,
+            'id_jadwal' => $absen['jadwal_id'],
+            'kelas' => $absen['kelas'],
+            'jurusan' => $absen['jurusan'],
+        ]);
     }
 }

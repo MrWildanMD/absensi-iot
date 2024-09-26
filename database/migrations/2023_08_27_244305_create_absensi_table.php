@@ -16,11 +16,14 @@ return new class extends Migration
         // $table->unsignedBigInteger('id_jadwal');
         $table->time('jam');
         $table->date('tanggal');
-        $table->string('uid', 255);
+        $table->unsignedBigInteger('uid');
+        $table->foreign('uid')->references('id')->on('mahasiswa');
         $table->string('status');
-        // $table->foreign('id_jadwal')->references('id')->on('jadwal');
+        $table->unsignedBigInteger('id_jadwal');
+        $table->foreign('id_jadwal')->references('id')->on('jadwal');
         $table->timestamps();
     });
+    // Schema::enableForeignKeyConstraints();
 }
 
     /**
